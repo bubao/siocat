@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Socket.IO Test Server</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Socket.IO Test Server</h1>
+    
+    <div class="container">
+        <h2>Server Information</h2>
+        <p>This is a test Socket.IO server for siocat development and testing.</p>
+        <p>Server is running and ready to accept connections.</p>
+    </div>
+    
+    <div class="container">
+        <h2>Testing with siocat</h2>
+        <p>To test with siocat, use the following commands:</p>
+        
+        <h3>Basic Connection</h3>
+        <pre>node bin/siocat.js http://localhost:3000</pre>
+        
+        <h3>Sending Events</h3>
+        <p>Once connected, you can send events in the siocat TUI:</p>
+        <pre>emit chatMessage {"message": "Hello World"}
+emit joinRoom {"room": "general"}
+emit customEvent {"data": "test value"}</pre>
+        
+        <h3>Supported Events</h3>
+        <ul>
+            <li><code>chatMessage</code> - Send a chat message</li>
+            <li><code>joinRoom</code> - Join a room</li>
+            <li><code>customEvent</code> - Send a custom event (supports acknowledgment)</li>
+        </ul>
+    </div>
+    
+    <div class="container">
+        <h2>API Endpoints</h2>
+        <ul>
+            <li><code>GET /</code> - This page</li>
+        </ul>
+    </div>
+</body>
+</html>
