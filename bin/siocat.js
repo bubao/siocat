@@ -53,7 +53,10 @@ program
       });
 
       let tui;
-      if (options.tui) {
+      // 默认使用TUI，除非明确指定了--no-tui
+      const useTui = !options.noTui;
+      
+      if (useTui) {
         // Use blessed TUI
         tui = new SioCatTUI(client);
         tui.init();
@@ -69,7 +72,7 @@ program
       
       // Setup client event handlers AFTER connection
       client.onEvent('connect', () => {
-        if (options.tui) {
+        if (useTui) {
           tui.updateStatus(`Connected to ${url}${options.namespace || '/'}`);
           tui.addMessage('Connected to server', 'system');
         } else {
@@ -78,7 +81,7 @@ program
       });
       
       client.onEvent('disconnect', (reason) => {
-        if (options.tui) {
+        if (useTui) {
           tui.updateStatus(`Disconnected: ${reason}`);
           tui.addMessage(`Disconnected: ${reason}`, 'system');
         } else {
@@ -87,7 +90,7 @@ program
       });
       
       client.onEvent('connect_error', (error) => {
-        if (options.tui) {
+        if (useTui) {
           tui.updateStatus(`Connection error: ${error.message}`);
           tui.addMessage(`Connection error: ${error.message}`, 'error');
         } else {
@@ -99,7 +102,7 @@ program
       const commonEvents = ['welcome', 'message', 'newMessage', 'joinedRoom', 'messageSent', 'customEvent'];
       commonEvents.forEach(eventType => {
         client.onEvent(eventType, (data) => {
-          if (options.tui) {
+          if (useTui) {
             tui.addMessage(`${eventType}: ${JSON.stringify(data)}`, 'received');
           } else {
             console.log(chalk.cyan(`< ${eventType}: ${JSON.stringify(data)}`));
@@ -108,7 +111,7 @@ program
       });
       
       // If not using TUI, setup readline interface
-      if (!options.tui) {
+      if (!useTui) {
         const readline = require('readline');
         const rl = readline.createInterface({
           input: process.stdin,
