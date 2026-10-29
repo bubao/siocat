@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 
@@ -6,14 +7,16 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
-  }
+    origin: '*',
+    methods: ['GET', 'POST']
+  },
+  // Enable Engine.IO v3 protocol compatibility so Socket.IO v2 clients can connect alongside v3 and v4
+  allowEIO3: true
 });
 
 // Serve static files
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Handle socket connections
@@ -83,6 +86,7 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 3000;
 httpServer.listen(PORT, () => {
-  console.log(`Socket.IO test server listening on port ${PORT}`);
-  console.log(`Connect to this server with: node bin/siocat.js http://localhost:${PORT}`);
+  console.log(`Socket.IO test server listening on http://localhost:${PORT}`);
+  console.log(`Supported protocols: v2 (-p 2), v3 (-p 3), v4 (-p 4)`);
+  console.log(`Connect with: node bin/siocat.js http://localhost:${PORT}`);
 });

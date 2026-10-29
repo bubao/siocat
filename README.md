@@ -2,8 +2,9 @@
 
 > A human-friendly TUI & CLI client for **Socket.IO**, similar to `wscat` but tailored for Socket.IO protocols (v2, v3, v4).
 
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](package.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D12.0.0-green.svg)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D16.0.0-green.svg)](https://nodejs.org/)
 [![Socket.IO](https://img.shields.io/badge/Socket.IO-v2%20%7C%20v3%20%7C%20v4-orange.svg)](https://socket.io/)
 
 ---
@@ -166,19 +167,25 @@ siocat http://localhost:3000 --no-tui
 
 ## 🧪 本地开发与测试 / Development & Testing
 
-项目自带测试服务端与完整的自动化测试用例（基于 Jest）：
+项目自带全版本兼容的测试服务端（`mock-server/`）与完整的自动化测试用例（基于 Jest）：
 
 ```bash
-# 1. 运行自动化测试套件
+# 1. 运行自动化测试套件（38 项测试，纯单元/集成测试）
 npm test
 
-# 2. 启动内置 Socket.IO 测试服务端（端口 3000）
+# 运行并查看测试覆盖率报告
+npm run test:coverage
+
+# 2. 启动内置全协议兼容测试服务端（监听端口 3000，同时支持 v2/v3/v4 协议客户端）
 npm run test-server
 
 # 3. 另开终端体验 siocat TUI
+# 连接默认 v4 协议
 node bin/siocat.js http://localhost:3000
+# 或连接 v2 协议（服务端 allowEIO3 自动兼容）
+node bin/siocat.js http://localhost:3000 -p 2
 
-# 4. 或者体验 CLI 模式
+# 4. 或者体验 CLI 纯控制台终端模式
 node bin/siocat.js http://localhost:3000 --no-tui
 ```
 

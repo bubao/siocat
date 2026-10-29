@@ -4,6 +4,7 @@
 const { Command } = require('commander');
 const chalk = require('chalk');
 const JSON5 = require('json5');
+const { version } = require('../package.json');
 const SioCatClient = require('../lib/socket-client');
 const CommandEngine = require('../lib/commands');
 const SioCatTUI = require('../lib/tui');
@@ -14,7 +15,7 @@ const program = new Command();
 program
   .name('siocat')
   .description('A human-friendly TUI & CLI client for Socket.IO with multi-protocol support')
-  .version('1.0.0')
+  .version(version)
   .argument('<url>', 'Socket.IO server URL (e.g. http://localhost:3000)')
   .option('-n, --namespace <namespace>', 'Socket.IO namespace', '/')
   .option('-p, --protocol <version>', 'Socket.IO client/protocol version (2, 3, or 4)', (val) => parseInt(val, 10))

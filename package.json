@@ -1,24 +1,36 @@
 {
   "name": "siocat",
   "version": "1.0.0",
-  "description": "A human-friendly TUI client for Socket.IO, similar to wscat but with support for multiple Socket.IO protocol versions",
+  "description": "A human-friendly TUI & CLI client for Socket.IO with multi-protocol support (v2, v3, v4)",
   "main": "bin/siocat.js",
   "bin": {
     "siocat": "bin/siocat.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bubao/siocat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bubao/siocat/issues"
+  },
+  "homepage": "https://github.com/bubao/siocat#readme",
   "scripts": {
     "start": "node bin/siocat.js",
-    "test-server": "node test/server.js",
-    "test": "jest --runInBand --detectOpenHandles"
+    "test-server": "node mock-server/server.js",
+    "test": "jest --runInBand --detectOpenHandles",
+    "test:coverage": "jest --runInBand --detectOpenHandles --coverage"
   },
   "keywords": [
     "socket.io",
     "websocket",
     "tui",
     "cli",
-    "client"
+    "client",
+    "wscat",
+    "terminal",
+    "blessed"
   ],
-  "author": "Developer",
+  "author": "bubao <asd565586630@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "blessed": "^0.1.81",
@@ -38,6 +50,6 @@
     "socket.io": "^4.8.1"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=16.0.0"
   }
 }
