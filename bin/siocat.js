@@ -18,7 +18,7 @@ program
   .version(version)
   .argument('<url>', 'Socket.IO server URL (e.g. http://localhost:3000)')
   .option('-n, --namespace <namespace>', 'Socket.IO namespace', '/')
-  .option('-p, --protocol <version>', 'Socket.IO client/protocol version (2, 3, or 4)', (val) => parseInt(val, 10))
+  .option('-p, --protocol <version>', 'Socket.IO client version (2 for 1.x/2.x, 3 for 3.x, 4 for 4.x)', (val) => parseInt(val, 10))
   .option('-H, --header <header:value>', 'Set HTTP header (can be repeated)', (val, prev = {}) => {
     const colonIdx = val.indexOf(':');
     if (colonIdx > -1) {

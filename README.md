@@ -140,7 +140,7 @@ siocat http://localhost:3000 --no-tui
 选项:
   -V, --version                   输出版本号
   -n, --namespace <namespace>     指定连接命名空间 (默认: "/")
-  -p, --protocol <version>        Socket.IO 协议大版本 (2, 3, 或 4，默认: 4)
+  -p, --protocol <version>        Socket.IO 客户端大版本 (2 对应 1.x/2.x, 3 对应 3.x, 4 对应 4.x，默认: 4)
   -H, --header <header:value>     设置自定义 HTTP 请求头 (可多次传入)
   -o, --origin <origin>           设置 Origin 请求头
   -a, --auth <json>               Socket.IO v4 握手认证参数 (JSON/JSON5 格式)
@@ -155,13 +155,28 @@ siocat http://localhost:3000 --no-tui
 
 ---
 
-## 📊 Socket.IO 协议兼容对照表
+## 📊 Socket.IO 协议与版本兼容指南
 
-| 客户端版本 (`-p`) | Engine.IO 协议 | Socket.IO 协议 | 对应服务端版本 |
-|------------------|----------------|----------------|---------------|
-| `-p 2` | v3 | v4 | Socket.IO 1.x & 2.x |
-| `-p 3` | v4 | v5 | Socket.IO 3.x |
-| `-p 4` (默认) | v4 | v5 | Socket.IO 4.x |
+由于 Socket.IO 历代演进中重构了底层心跳握手协议（Engine.IO）与数据包编码规范（Socket.IO Parser），不同大版本之间存在协议差异。**siocat** 内置了多版本客户端驱动，通过 `-p, --protocol <version>` 即可无缝切换。
+
+### 1. 服务端选型速查表（如何选择 `-p`）
+
+| 目标服务端版本 | 推荐参数 | 连通性说明 |
+|---------------|---------|-----------|
+| **Socket.IO 4.x 服务端** | （默认无需指定）或 `-p 4` | 原生完美兼容（Engine.IO v4 / Parser v5） |
+| **Socket.IO 3.x 服务端** | `-p 4` 或 `-p 3` | 3.x 与 4.x 底层协议完全一致，`-p 4` 或 `-p 3` 均可互通 |
+| **Socket.IO 2.x / 1.x 服务端** | **`-p 2`** | 必须指定 `-p 2`（旧版仅支持 Engine.IO v3 握手协议） |
+| **开启了 `allowEIO3: true` 的 4.x 服务端** | `-p 2`、`-p 3`、`-p 4` 均可 | 服务端向下兼容旧版握手，任意客户端版本均能连通 |
+
+> **提示**：命令行参数 `-p` 接收的是 **Socket.IO 客户端 SDK 的大版本号（2、3、4）**，通常直接对应你的服务端主版本。
+
+### 2. 底层协议详细对照矩阵
+
+| siocat 参数 (`-p`) | 底层 Client 库 | Engine.IO 握手协议 (`EIO`) | Socket.IO 封包协议 (`protocol`) | 兼容的服务端范围 |
+|-------------------|---------------|--------------------------|-------------------------------|----------------|
+| **`-p 2`** | `socket.io-client@2.5.0` | **v3** (`EIO=3`) | **v4** | Socket.IO 1.x、2.x（或开启 `allowEIO3` 的 3.x/4.x） |
+| **`-p 3`** | `socket.io-client@3.1.3` | **v4** (`EIO=4`) | **v5** | Socket.IO 3.x、4.x |
+| **`-p 4`**（默认） | `socket.io-client@4.8.1` | **v4** (`EIO=4`) | **v5** | Socket.IO 4.x、3.x |
 
 ---
 
