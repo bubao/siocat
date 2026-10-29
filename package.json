@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node bin/siocat.js",
     "test-server": "node test/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --runInBand --detectOpenHandles"
   },
   "keywords": [
     "socket.io",
@@ -22,8 +22,11 @@
   "license": "MIT",
   "dependencies": {
     "blessed": "^0.1.81",
+    "blessed-contrib": "^4.11.0",
     "chalk": "^4.1.2",
+    "cli-table3": "^0.6.5",
     "commander": "^11.0.0",
+    "json5": "^2.2.3",
     "socket.io-client": "^4.8.1",
     "socket.io-client-2": "npm:socket.io-client@^2.5.0",
     "socket.io-client-3": "npm:socket.io-client@^3.1.3",
